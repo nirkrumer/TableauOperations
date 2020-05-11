@@ -10,7 +10,6 @@ def tableau_sign_in(url_server, user_name, password):
     server.auth.sign_in(tableau_auth)
     return server
 
-
 def tableauSignOut(server):
     server.auth.sign_out()   
 

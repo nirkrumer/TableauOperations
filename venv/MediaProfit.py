@@ -22,6 +22,7 @@ def getViewByWbId(server, wbId, viewName):
      views = [x for x in TSC.Pager(server.views) if (x.workbook_id == wbId and x.name == viewName)]
      return None if len(views) == 0 else views.pop()
 
+
 # TableauAdminPass = os.environ.get("TableauAdminPass")
 # tableau_auth = TSC.TableauAuth('admin', TableauAdminPass)
 tableau_auth = TSC.TableauAuth('admin', 'xqKE4ynYHzoGCiVwPWsBGZrT')
