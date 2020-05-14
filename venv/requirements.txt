@@ -1,6 +1,5 @@
 tableauserverclient
-smtplib
-ssl
+smtplib, ssl
 MIMEText
 MIMEMultipart
 MIMEImage
