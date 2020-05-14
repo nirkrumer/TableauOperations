@@ -22,7 +22,6 @@ def getViewByWbId(server, wbId, viewName):
      views = [x for x in TSC.Pager(server.views) if (x.workbook_id == wbId and x.name == viewName)]
      return None if len(views) == 0 else views.pop()
 
-
 # TableauAdminPass = os.environ.get("TableauAdminPass")
 # tableau_auth = TSC.TableauAuth('admin', TableauAdminPass)
 tableau_auth = TSC.TableauAuth('admin', 'xqKE4ynYHzoGCiVwPWsBGZrT')
@@ -32,10 +31,11 @@ with server.auth.sign_in(tableau_auth):
     view_item = (getViewByWbId(server,
             getWorkbookByName(server, "Media Profit").id,"Management Dashboard"))
     group = (getUserListByGroup(server,"Push Tests"))
-    pagination_item = server.groups.populate_users(group)
-    # for user in group.users:
-    #     print(user.name)
 
+    users = []
+    pagination_item = server.groups.populate_users(group)
+    for user in group.users:
+        users.append(user.name)
     server.views.populate_image(view_item)
     with open('./Screenshots/dashboard-screenshot-'+ str(date.today()) +'.png', 'wb') as f:
          f.write(view_item.image)
@@ -63,8 +63,8 @@ with server.auth.sign_in(tableau_auth):
 
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
         server.login("boomi@naturalint.com", "b89qPL4b")
-        for user in group.users:
-            message["To"] = user
-        server.sendmail(sender_email, receiver_email, message.as_string())
+        for reciever in users:
+            message["To"] = reciever
+            server.sendmail(sender_email, reciever, message.as_string())
 
         server.quit()
