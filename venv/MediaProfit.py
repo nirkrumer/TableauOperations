@@ -1,6 +1,6 @@
 import tableauserverclient as TSC
-#import ObjectGetters ;
-import smtplib, ssl
+import smtplib
+import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
@@ -31,7 +31,7 @@ server = TSC.Server('https://tableau.naturalint.com',use_server_version=True)
 with server.auth.sign_in(tableau_auth):
     view_item = (getViewByWbId(server,
             getWorkbookByName(server, "Media Profit").id,"Management Dashboard"))
-    group = (getUserListByGroup(server,"Management V2.0"))
+    group = (getUserListByGroup(server,"Push Tests"))
     pagination_item = server.groups.populate_users(group)
     # for user in group.users:
     #     print(user.name)
@@ -45,11 +45,9 @@ with server.auth.sign_in(tableau_auth):
     port = 465
     context = ssl.create_default_context()
     sender_email = "boomi@naturalint.com"
-    receiver_email = "nir.krumer@naturalint.com"
     message = MIMEMultipart("alternative")
     message["Subject"] = "Management Dashboard - " + str(date.today())
     message["From"] = sender_email
-    message["To"] = receiver_email
     messageText = '<html><body><h3>dear all, please review ' + str(datetime.datetime.now().strftime("%B")) + \
                   ' Rev & GP status as of ' + str(date.today()) + ' below & linked' \
                   '</h3>' + '<p>' '<img src="cid:image1" height="800" width="1200">' \
@@ -65,6 +63,8 @@ with server.auth.sign_in(tableau_auth):
 
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
         server.login("boomi@naturalint.com", "b89qPL4b")
+        for user in group.users:
+            message["To"] = user
         server.sendmail(sender_email, receiver_email, message.as_string())
 
         server.quit()
