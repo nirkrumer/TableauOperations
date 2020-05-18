@@ -7,6 +7,8 @@ from email.mime.image import MIMEImage
 from datetime import date
 import datetime
 import os
+import boto3
+from botocore.exceptions import NoCredentialsError
 
     # ----------------------- UTILS ---------------------------------
 
@@ -18,9 +20,18 @@ def getUserListByGroup(server, group_name):
     groups = [x for x in TSC.Pager(server.groups) if x.name == group_name]
     return None if len(groups) == 0 else groups.pop()
 
-def getViewByWbId(server, wbId, viewName):
+def getViewByWbIdAndviewName(server, wbId, viewName):
      views = [x for x in TSC.Pager(server.views) if (x.workbook_id == wbId and x.name == viewName)]
      return None if len(views) == 0 else views.pop()
+
+def getViewById(server, Id):
+    views = [x for x in TSC.Pager(server.views) if (x.id == Id)]
+    return None if len(views) == 0 else views.pop()
+
+def getViewsByWbId(server, wbId):
+    views = [x for x in TSC.Pager(server.views) if (x.workbook_id == wbId)]
+    return None if len(views) == 0 else views
+
 
 # TableauAdminPass = os.environ.get("TableauAdminPass")
 # tableau_auth = TSC.TableauAuth('admin', TableauAdminPass)
@@ -28,15 +39,21 @@ tableau_auth = TSC.TableauAuth('admin', 'xqKE4ynYHzoGCiVwPWsBGZrT')
 server = TSC.Server('https://tableau.naturalint.com',use_server_version=True)
 
 with server.auth.sign_in(tableau_auth):
-    view_item = (getViewByWbId(server,
-            getWorkbookByName(server, "Media Profit").id,"Management Dashboard"))
     group = (getUserListByGroup(server,"Push Tests"))
-
     users = []
     pagination_item = server.groups.populate_users(group)
     for user in group.users:
         users.append(user.name)
+
+    # views = getViewsByWbId(server,getWorkbookByName(server, "Media Profit").id)
+    # for v in views:
+    #     print("name = " +v.name + ", id = "+ v.id)
+    # breakpoint()
+    # view_item = (getViewByWbIdAndviewName(server,
+    #     getWorkbookByName(server, "Media Profit").id, s.strip("Push")))
+    view_item = getViewById(server,'3ef50c2c-990e-4c39-9793-a00e49c64d76')
     server.views.populate_image(view_item)
+
     with open('./Screenshots/dashboard-screenshot-'+ str(date.today()) +'.png', 'wb') as f:
          f.write(view_item.image)
     server.auth.sign_out()
@@ -50,7 +67,7 @@ with server.auth.sign_in(tableau_auth):
     message["From"] = sender_email
     messageText = '<html><body><h3>dear all, please review ' + str(datetime.datetime.now().strftime("%B")) + \
                   ' Rev & GP status as of ' + str(date.today()) + ' below & linked' \
-                  '</h3>' + '<p>' '<img src="cid:image1" height="800" width="1200">' \
+                  '</h3>' + '<p>' '<img src="cid:image1" height="800" width="1000">' \
                     '</p>' + '</body></html>'
     message.attach(MIMEText(messageText, "html"))
 
