@@ -67,6 +67,7 @@ with server.auth.sign_in(tableau_auth):
     message["From"] = sender_email
     messageText = '<html><body><h3>dear all, please review ' + str(datetime.datetime.now().strftime("%B")) + \
                   ' Rev & GP status as of ' + str(date.today()) + ' below & linked' \
+                  '<br> <a href = "https://tableau.naturalint.com/#/views/MediaProfit_15837716869430/ManagementDashboard"' \
                   '</h3>' + '<p>' '<img src="cid:image1" height="800" width="1000">' \
                     '</p>' + '</body></html>'
     message.attach(MIMEText(messageText, "html"))
