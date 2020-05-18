@@ -7,9 +7,6 @@ from email.mime.image import MIMEImage
 from datetime import date
 import datetime
 import os
-import boto3
-from botocore.exceptions import NoCredentialsError
-
     # ----------------------- UTILS ---------------------------------
 
 def getWorkbookByName(server, wb_name):
@@ -68,7 +65,6 @@ with server.auth.sign_in(tableau_auth):
     messageText = '<html><body><h3>Dear all, please review ' + str(datetime.datetime.now().strftime("%B")) + \
                   ' Rev & GP status as of ' + str(date.today()) + ' below & ' \
                   '<a href = "https://tableau.naturalint.com/#/views/MediaProfit_15837716869430/ManagementDashboard"> linked </a>' \
-                                                                  '' \
                   '</h3>' + '<p>' '<img src="cid:image1" height="800" width="1000">' \
                     '</p>' + '</body></html>'
     message.attach(MIMEText(messageText, "html"))
