@@ -58,7 +58,7 @@ with server.auth.sign_in(tableau_auth):
 
     port = 465
     context = ssl.create_default_context()
-    sender_email = "boomi@naturalint.com"
+    sender_email = "Tableau MP Report"
     message = MIMEMultipart("alternative")
     message["Subject"] = "Management Dashboard - " + str(date.today())
     message["From"] = sender_email
