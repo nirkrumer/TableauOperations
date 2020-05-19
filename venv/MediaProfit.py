@@ -32,9 +32,8 @@ def getViewsByWbId(server, wbId):
     return None if len(views) == 0 else views
 
 
-# TableauAdminPass = os.environ.get("TableauAdminPass")
-# tableau_auth = TSC.TableauAuth('admin', TableauAdminPass)
-tableau_auth = TSC.TableauAuth('admin', 'xqKE4ynYHzoGCiVwPWsBGZrT')
+TableauAdminPass = os.environ.get("TableauAdminPass")
+tableau_auth = TSC.TableauAuth('admin', TableauAdminPass)
 server = TSC.Server('https://tableau.naturalint.com',use_server_version=True)
 
 with server.auth.sign_in(tableau_auth):
