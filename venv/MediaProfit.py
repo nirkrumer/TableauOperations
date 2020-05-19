@@ -36,7 +36,7 @@ tableau_auth = TSC.TableauAuth('admin', 'xqKE4ynYHzoGCiVwPWsBGZrT')
 server = TSC.Server('https://tableau.naturalint.com',use_server_version=True)
 
 with server.auth.sign_in(tableau_auth):
-    group = (getUserListByGroup(server,"Push Tests"))
+    group = (getUserListByGroup(server,"push(test)-nir"))
     users = []
     pagination_item = server.groups.populate_users(group)
     for user in group.users:
@@ -46,9 +46,9 @@ with server.auth.sign_in(tableau_auth):
     # for v in views:
     #     print("name = " +v.name + ", id = "+ v.id)
     # breakpoint()
-    # view_item = (getViewByWbIdAndviewName(server,
-    #     getWorkbookByName(server, "Media Profit").id, s.strip("Push")))
-    view_item = getViewById(server,'3ef50c2c-990e-4c39-9793-a00e49c64d76')
+    view_item = (getViewByWbIdAndviewName(server,
+        getWorkbookByName(server, "Media Profit").id, "Push Mail"))
+    #view_item = getViewById(server,'3ef50c2c-990e-4c39-9793-a00e49c64d76')
     server.views.populate_image(view_item)
 
     with open('./Screenshots/dashboard-screenshot-'+ str(date.today()) +'.png', 'wb') as f:
@@ -64,7 +64,7 @@ with server.auth.sign_in(tableau_auth):
     message["From"] = sender_email
     messageText = '<html><body><h3>Dear all, please review ' + str(datetime.datetime.now().strftime("%B")) + \
                   ' Rev & GP status as of ' + str(date.today()) + ' below & ' \
-                  '<a href = "https://tableau.naturalint.com/#/views/MediaProfit_15837716869430/ManagementDashboard"> linked </a>' \
+                  '<a href = "https://tableau.naturalint.com/#/views/MediaProfit_15837716869430/Push?:iid=1"> linked </a>' \
                   '</h3>' + '<p>' '<img src="cid:image1" height="800" width="1000">' \
                     '</p>' + '</body></html>'
     message.attach(MIMEText(messageText, "html"))
