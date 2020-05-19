@@ -48,7 +48,6 @@ with server.auth.sign_in(tableau_auth):
     # breakpoint()
     view_item = (getViewByWbIdAndviewName(server,
         getWorkbookByName(server, "Media Profit").id, "Push Mail"))
-    #view_item = getViewById(server,'3ef50c2c-990e-4c39-9793-a00e49c64d76')
     server.views.populate_image(view_item)
 
     with open('./Screenshots/dashboard-screenshot-'+ str(date.today()) +'.png', 'wb') as f:
@@ -65,7 +64,7 @@ with server.auth.sign_in(tableau_auth):
     messageText = '<html><body><h3>Dear all, please review ' + str(datetime.datetime.now().strftime("%B")) + \
                   ' Rev & GP status as of ' + str(date.today()) + ' below & ' \
                   '<a href = "https://tableau.naturalint.com/#/views/MediaProfit_15837716869430/Push?:iid=1"> linked </a>' \
-                  '</h3>' + '<p>' '<img src="cid:image1" height="800" width="1000">' \
+                  '</h3>' + '<p>' '<img src="cid:image1" height="800" width="1100">' \
                     '</p>' + '</body></html>'
     message.attach(MIMEText(messageText, "html"))
 
