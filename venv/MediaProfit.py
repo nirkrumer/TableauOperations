@@ -36,7 +36,7 @@ tableau_auth = TSC.TableauAuth('admin', 'xqKE4ynYHzoGCiVwPWsBGZrT')
 server = TSC.Server('https://tableau.naturalint.com',use_server_version=True)
 
 with server.auth.sign_in(tableau_auth):
-    group = (getUserListByGroup(server,"push(test)-nir"))
+    group = (getUserListByGroup(server,"Push Tests"))
     users = []
     pagination_item = server.groups.populate_users(group)
     for user in group.users:
