@@ -4,6 +4,8 @@ import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.image import MIMEImage
+from email.mime.application import MIMEApplication
+from os.path import basename
 from datetime import date
 import datetime
 import os
@@ -30,13 +32,13 @@ def getViewsByWbId(server, wbId):
     return None if len(views) == 0 else views
 
 
-# TableauAdminPass = os.environ.get("TableauAdminPass")
-# tableau_auth = TSC.TableauAuth('admin', TableauAdminPass)
-tableau_auth = TSC.TableauAuth('admin', 'xqKE4ynYHzoGCiVwPWsBGZrT')
+TableauAdminPass = os.environ.get("TableauAdminPass")
+tableau_auth = TSC.TableauAuth('admin', TableauAdminPass)
+#tableau_auth = TSC.TableauAuth('admin', 'xqKE4ynYHzoGCiVwPWsBGZrT')
 server = TSC.Server('https://tableau.naturalint.com',use_server_version=True)
 
 with server.auth.sign_in(tableau_auth):
-    group = (getUserListByGroup(server,"Push Tests"))
+    group = (getUserListByGroup(server,"push(test)-nir"))
     users = []
     pagination_item = server.groups.populate_users(group)
     for user in group.users:
@@ -67,13 +69,16 @@ with server.auth.sign_in(tableau_auth):
                   '</h3>' + '<p>' '<img src="cid:image1" height="800" width="1100">' \
                     '</p>' + '</body></html>'
     message.attach(MIMEText(messageText, "html"))
-
-    fp = open('./Screenshots/dashboard-screenshot-'+ str(date.today()) +'.png', 'rb')
+    f = './Screenshots/dashboard-screenshot-'+ str(date.today()) +'.png'
+    fp = open(f, "rb")
     msgImage = MIMEImage(fp.read())
+    part = MIMEApplication(fp.read(),Name=basename(f))
     fp.close()
 
     msgImage.add_header('Content-ID', '<image1>')
     message.attach(msgImage)
+    part['Content-Disposition'] = 'attachment; filename="%s"' % basename(f)
+    message.attach(part)
 
     with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
         server.login("boomi@naturalint.com", "b89qPL4b")
