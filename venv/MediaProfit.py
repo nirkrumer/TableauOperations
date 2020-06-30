@@ -38,8 +38,8 @@ tableau_auth = TSC.TableauAuth('admin', TableauAdminPass)
 server = TSC.Server('https://tableau.naturalint.com',use_server_version=True)
 
 with server.auth.sign_in(tableau_auth):
-    #group = (getUserListByGroup(server,"Management Alerts"))
-    group = (getUserListByGroup(server,"push(test)-nir"))
+    group = (getUserListByGroup(server,"Management Alerts"))
+    #group = (getUserListByGroup(server,"push(test)-nir"))
     users = []
     pagination_item = server.groups.populate_users(group)
     for user in group.users:
@@ -66,7 +66,7 @@ with server.auth.sign_in(tableau_auth):
     message["From"] = sender_email
     messageText = '<html><body><h3>Dear all, please review ' + str(datetime.datetime.now().strftime("%B")) + \
                   ' Rev & GP status as of ' + str(date.today()) + ' below & ' \
-                  '<a href = "https://tableau.naturalint.com/#/views/MediaProfit_15837716869430/Push?:iid=1"> linked </a>' \
+                  '<a href = "https://tableau.naturalint.com/#/views/MediaProfit_15900497529020/Push?:iid=1"> linked </a>' \
                   '</h3>' + '<p>' '<img src="cid:image1" height="800" width="1100">' \
                     '</p>' + '</body></html>'
     message.attach(MIMEText(messageText, "html"))
