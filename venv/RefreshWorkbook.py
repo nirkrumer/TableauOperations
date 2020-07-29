@@ -5,7 +5,7 @@ def getWorkbookByName(server, wb_name):
     workbooks = [x for x in TSC.Pager(server.workbooks) if x.name == wb_name]
     return None if len(workbooks) == 0 else workbooks.pop()
 
-flag = False
+isScheduleExists = False
 wbName = os.getenv("wbName");
 TableauAdminPass = os.environ.get("TableauAdminPass")
 tableau_auth = TSC.TableauAuth('admin', TableauAdminPass)
@@ -19,9 +19,9 @@ with server.auth.sign_in(tableau_auth):
         if task.target.id == wb.id:
             print("wbName = " + wb.name + " runs by schedule: task id = " + task.target.id + ", task sched = "+ task.schedule_id + ",type = " + task.target.type)
             server.tasks.run(task)
-            flag = True
+            isScheduleExists = True
             break
-    if (flag == False):
+    if (isScheduleExists == False):
         print("wbName = " + wb.name + "(without schedule) runs!")
         results = server.workbooks.refresh(wb.id)
 
