@@ -18,7 +18,7 @@ with server.auth.sign_in(tableau_auth):
 
     for task in all_tasks:
         if task.target.id == wb.id:
-            print("wbName = " + wb.name " runs by schedulue: task id = " + task.target.id + ", task sched = "+ task.schedule_id + ",type = " + task.target.type)
+            print("wbName = " + wb.name + " runs by schedulue: task id = " + task.target.id + ", task sched = "+ task.schedule_id + ",type = " + task.target.type)
             server.tasks.run(task)
             flag = True
             break
