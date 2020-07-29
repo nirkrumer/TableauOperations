@@ -5,13 +5,21 @@ def getWorkbookByName(server, wb_name):
     workbooks = [x for x in TSC.Pager(server.workbooks) if x.name == wb_name]
     return None if len(workbooks) == 0 else workbooks.pop()
 
-wbName = os.getenv("wbName");
-TableauAdminPass = os.environ.get("TableauAdminPass")
-tableau_auth = TSC.TableauAuth('admin', TableauAdminPass)
+#wbName = os.getenv("wbName");
+wbName = "Workbook Management"
+# TableauAdminPass = os.environ.get("TableauAdminPass")
+# tableau_auth = TSC.TableauAuth('admin', TableauAdminPass)
+tableau_auth = TSC.TableauAuth('admin', 'xqKE4ynYHzoGCiVwPWsBGZrT')
 server = TSC.Server('https://tableau.naturalint.com',use_server_version=True)
 
 with server.auth.sign_in(tableau_auth):
+    all_tasks, pagination_item = server.tasks.get()
     wb = getWorkbookByName(server,wbName)
-    results = server.workbooks.refresh(wb)
+
+    for task in all_tasks:
+        if task.target.id == wb.id:
+            print("task id = " + task.target.id + ", task sched = "+ task.schedule_id + ",type = " + task.target.type)
+            server.tasks.run(task)
+            break
 
 server.auth.sign_out()

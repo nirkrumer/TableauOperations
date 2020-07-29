@@ -34,7 +34,7 @@ def getViewsByWbId(server, wbId):
 
 TableauAdminPass = os.environ.get("TableauAdminPass")
 tableau_auth = TSC.TableauAuth('admin', TableauAdminPass)
-#tableau_auth = TSC.TableauAuth('admin', 'xqKE4ynYHzoGCiVwPWsBGZrT')
+
 server = TSC.Server('https://tableau.naturalint.com',use_server_version=True)
 
 with server.auth.sign_in(tableau_auth):
@@ -44,11 +44,6 @@ with server.auth.sign_in(tableau_auth):
     pagination_item = server.groups.populate_users(group)
     for user in group.users:
         users.append(user.name)
-
-    # views = getViewsByWbId(server,getWorkbookByName(server, "Media Profit").id)
-    # for v in views:
-    #     print("name = " +v.name + ", id = "+ v.id)
-    # breakpoint()
     view_item = (getViewByWbIdAndviewName(server,
         getWorkbookByName(server, "Media Profit").id, "Push Mail"))
     server.views.populate_image(view_item)
@@ -66,7 +61,7 @@ with server.auth.sign_in(tableau_auth):
     message["From"] = sender_email
     messageText = '<html><body><h3>Dear all, please review ' + str(datetime.datetime.now().strftime("%B")) + \
                   ' Rev & GP status as of ' + str(date.today()) + ' below & ' \
-                  '<a href = "https://tableau.naturalint.com/#/views/MediaProfit_15900497529020/Push?:iid=1"> linked </a>' \
+                  '<a href = "https://tableau.naturalint.com/#/views/MediaProfit-Forecast/MediaViewMonthly?:iid=2"> linked </a>' \
                   '</h3>' + '<p>' '<img src="cid:image1" height="800" width="1100">' \
                     '</p>' + '</body></html>'
     message.attach(MIMEText(messageText, "html"))
