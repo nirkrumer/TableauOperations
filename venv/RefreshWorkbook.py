@@ -23,7 +23,7 @@ with server.auth.sign_in(tableau_auth):
             flag = True
             break
     if (flag == False):
-        print("wbName = " + wb.name + "without schedule runs!")
+        print("wbName = " + wb.name + "(without schedule) runs!")
         results = server.workbooks.refresh(wb.id)
 
 server.auth.sign_out()
