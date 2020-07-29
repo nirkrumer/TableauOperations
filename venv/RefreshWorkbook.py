@@ -12,8 +12,7 @@ tableau_auth = TSC.TableauAuth('admin', TableauAdminPass)
 server = TSC.Server('https://tableau.naturalint.com',use_server_version=True)
 
 with server.auth.sign_in(tableau_auth):
-    all_tasks, pagination_item = server.tasks.get()
-    #wb = getWorkbookByName(server,wbName)
+    all_tasks, pagination_item = server.tasks.get()    
     wb = getWorkbookByName(server,wbName)
 
     for task in all_tasks:
