@@ -15,7 +15,7 @@ with server.auth.sign_in(tableau_auth):
     all_tasks, pagination_item = server.tasks.get()    
     wb = getWorkbookByName(server,wbName)
     if (wb == None):
-        print ("No workbook was found")
+        print ("************* No workbook was found under the name: " + wbName + " ****************")
 
     for task in all_tasks:
         if task.target.id == wb.id:
